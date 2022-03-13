@@ -9,7 +9,8 @@ Macrophages derived from Control (CT) and PD individuals were exposed to myelin 
 library(tidyverse)
 library(magrittr)
 library(readxl)
-
+library(lmerTest)
+library(DHARMa)
 
 theme_set(theme_bw())
 ```
@@ -32,7 +33,33 @@ df
 ggplot(data = df, mapping = aes(x = TIME, y = INT, color = STATUS)) + geom_smooth(method = "loess", formula="y ~ x")
 ```
 ```{r}
-ggplot(data = df, mapping = aes(x = TIME, y = INT)) +
-  geom_point(aes(color= STATUS)) +
-  geom_line(aes(group = ID, color = STATUS))
+ggplot(data = df, mapping = aes(x = TIME, y = INT, group = ID, color = STATUS)) +
+  geom_point() +
+  geom_line()
+```
+```{r}
+ggplot(data = df, mapping = aes(x = TIME, y = INT, group = ID, color = STATUS)) + geom_smooth(method = "lm", formula="y ~ 0 + x", se = FALSE)
+```
+
+
+```{r}
+m1.fit = lmer(INT ~ 0 + TIME*STATUS + (0 + TIME | ID), data=df)
+
+summary(m1.fit)
+```
+
+```{r}
+m1.res = simulateResiduals(fittedModel = m1.fit)
+plot(m1.res)
+```
+
+```{r}
+m2.fit = lmer(INT ~ 0 + TIME*STATUS + (0 + TIME | ID), data=df %>% filter(TIME <= 10))
+
+summary(m2.fit)
+```
+
+```{r}
+m2.res = simulateResiduals(fittedModel = m2.fit)
+plot(m2.res)
 ```
