@@ -98,3 +98,10 @@ summary(m4.fit)
 m4.res = simulateResiduals(fittedModel = m4.fit)
 plot(m4.res)
 ```
+
+---
+
+See also:
+
+- https://doi-org.eresources.mssm.edu/10.1016/j.buildenv.2021.108349
+- https://doi.org/10.3758/s13423-017-1281-0
