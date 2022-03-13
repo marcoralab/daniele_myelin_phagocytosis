@@ -3,8 +3,6 @@ title: "2022-03-13: Myelin phagocytosis"
 output: html_notebook
 ---
 
-Macrophages derived from Control (CT) and PD individuals were exposed to myelin prepared from CT individuals.
-
 ```{r include=FALSE}
 library(tidyverse)
 library(magrittr)
@@ -14,6 +12,10 @@ library(DHARMa)
 
 theme_set(theme_bw())
 ```
+
+## Data
+
+Macrophages derived from Control (CT) and PD individuals were exposed to myelin prepared from CT individuals.
 
 ```{r}
 df = read_xlsx("ctrl_myelin-macrophages.xlsx")
@@ -37,10 +39,12 @@ ggplot(data = df, mapping = aes(x = TIME, y = INT, group = ID, color = STATUS)) 
   geom_point() +
   geom_line()
 ```
+
+## Linear regression forcing intercept to zero
+
 ```{r}
 ggplot(data = df, mapping = aes(x = TIME, y = INT, group = ID, color = STATUS)) + geom_smooth(method = "lm", formula="y ~ 0 + x", se = FALSE)
 ```
-
 
 ```{r}
 m1.fit = lmer(INT ~ 0 + TIME*STATUS + (0 + TIME | ID), data=df)
@@ -52,6 +56,7 @@ summary(m1.fit)
 m1.res = simulateResiduals(fittedModel = m1.fit)
 plot(m1.res)
 ```
+## Linear regression forcing intercept to zero and up to 10 hours
 
 ```{r}
 m2.fit = lmer(INT ~ 0 + TIME*STATUS + (0 + TIME | ID), data=df %>% filter(TIME <= 10))
@@ -62,4 +67,34 @@ summary(m2.fit)
 ```{r}
 m2.res = simulateResiduals(fittedModel = m2.fit)
 plot(m2.res)
+```
+
+## Linear regression not forcing intercept to zero
+
+```{r}
+ggplot(data = df, mapping = aes(x = TIME, y = INT, group = ID, color = STATUS)) + geom_smooth(method = "lm", formula="y ~ x", se = FALSE)
+```
+
+
+```{r}
+m3.fit = lmer(INT ~ TIME*STATUS + (TIME | ID), data=df)
+
+summary(m3.fit)
+```
+
+```{r}
+m3.res = simulateResiduals(fittedModel = m3.fit)
+plot(m3.res)
+```
+## Linear regression not forcing intercept to zero and up to 10 hours
+
+```{r}
+m4.fit = lmer(INT ~ TIME*STATUS + (TIME | ID), data=df %>% filter(TIME <= 10))
+
+summary(m4.fit)
+```
+
+```{r}
+m4.res = simulateResiduals(fittedModel = m4.fit)
+plot(m4.res)
 ```
