@@ -1,0 +1,38 @@
+---
+title: "2022-03-13: Myelin phagocytosis"
+output: html_notebook
+---
+
+Macrophages derived from Control (CT) and PD individuals were exposed to myelin prepared from CT individuals.
+
+```{r include=FALSE}
+library(tidyverse)
+library(magrittr)
+library(readxl)
+
+
+theme_set(theme_bw())
+```
+
+```{r}
+df = read_xlsx("ctrl_myelin-macrophages.xlsx")
+
+df
+
+df %<>%
+  pivot_longer(-TIME, values_to = "INT", names_to = "ID") %>%
+  separate(ID, sep = 2, into = c("STATUS", NULL), remove = FALSE) %>%
+  select(ID, STATUS, TIME, INT) %>%
+  arrange(ID, TIME)
+
+df
+```
+
+```{r}
+ggplot(data = df, mapping = aes(x = TIME, y = INT, color = STATUS)) + geom_smooth(method = "loess", formula="y ~ x")
+```
+```{r}
+ggplot(data = df, mapping = aes(x = TIME, y = INT)) +
+  geom_point(aes(color= STATUS)) +
+  geom_line(aes(group = ID, color = STATUS))
+```
