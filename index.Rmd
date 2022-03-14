@@ -9,6 +9,7 @@ library(magrittr)
 library(readxl)
 library(lmerTest)
 library(DHARMa)
+library(growthrates)
 
 theme_set(theme_bw())
 ```
