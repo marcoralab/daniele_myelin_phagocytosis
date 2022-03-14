@@ -123,6 +123,6 @@ summary(lmer(INT ~ STATUS*factor(TIME) + (1 | ID), data=df))
 See also:
 
 - https://stats.oarc.ucla.edu/r/seminars/repeated-measures-analysis-with-r/
-- https://dx.doi.org/10.1213%2FANE.0000000000003511
-- https://doi-org.eresources.mssm.edu/10.1016/j.buildenv.2021.108349
+- https://doi.org/10.1213%2FANE.0000000000003511
+- https://doi.org/10.1016/j.buildenv.2021.108349
 - https://doi.org/10.3758/s13423-017-1281-0
