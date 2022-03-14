@@ -102,22 +102,27 @@ plot(m4.res)
 ## Two-factor repeated-measures ANOVA
 
 ```{r}
-df2 = df %>% mutate(TIME = as.factor(TIME), STATUS = as.factor(STATUS))
-```
-
-```{r}
-ggplot(data = df2, mapping = aes(x = TIME, y = INT, color = STATUS)) +
+ggplot(data = df, mapping = aes(x = factor(TIME), y = INT, color = STATUS)) +
   geom_boxplot()
 ```
+```{r}
+summary(aov(INT ~ STATUS*factor(TIME) + Error(ID), data = df))
+```
+
 
 ```{r}
-aov.res = aov(INT ~ STATUS + TIME + Error(ID / (TIME)), data = df2)
-summary(aov.res)
+anova(lmer(INT ~ STATUS*factor(TIME) + (1 | ID), data=df))
+```
+
+```{r}
+summary(lmer(INT ~ STATUS*factor(TIME) + (1 | ID), data=df))
 ```
 
 ---
 
 See also:
 
+- https://stats.oarc.ucla.edu/r/seminars/repeated-measures-analysis-with-r/
+- https://dx.doi.org/10.1213%2FANE.0000000000003511
 - https://doi-org.eresources.mssm.edu/10.1016/j.buildenv.2021.108349
 - https://doi.org/10.3758/s13423-017-1281-0
