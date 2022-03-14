@@ -99,6 +99,22 @@ m4.res = simulateResiduals(fittedModel = m4.fit)
 plot(m4.res)
 ```
 
+## Two-factor repeated-measures ANOVA
+
+```{r}
+df2 = df %>% mutate(TIME = as.factor(TIME), STATUS = as.factor(STATUS))
+```
+
+```{r}
+ggplot(data = df2, mapping = aes(x = TIME, y = INT, color = STATUS)) +
+  geom_boxplot()
+```
+
+```{r}
+aov.res = aov(INT ~ STATUS + TIME + Error(ID / (TIME)), data = df2)
+summary(aov.res)
+```
+
 ---
 
 See also:
