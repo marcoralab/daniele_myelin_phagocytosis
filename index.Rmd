@@ -128,7 +128,8 @@ m = df %>%
   nest(data = -c(ID, STATUS)) %>%
   mutate(
     model = map(.x = data, ~ drm(.x$INT ~ .x$TIME, fct = DRC.negExp())),
-    tidied = map(model, tidy)
+    tidied = map(model, tidy),
+    predicted = map(model, predict)
   )
 
 t = m %>% 
@@ -151,23 +152,16 @@ wilcox.test(RATE ~ STATUS, data = t)
 ```
 
 ```{r}
-ggplot(data = df, mapping = aes(x = TIME, y = INT, group = ID, color = ID)) +
+df2 = df %>% left_join(m %>%
+    mutate(TIME = list(0:20)) %>%
+    select(ID, TIME, predicted) %>%
+    unnest(cols = c(TIME, predicted)),
+  by = c("ID", "TIME"))
+
+ggplot(data = df2, mapping = aes(x = TIME, y = INT, group = ID, color = ID)) +
   geom_point() +
-  geom_line()
+  geom_line(aes(y = predicted))
 ```
-```{r}
-df %>% filter(TIME == 20) %>% group_by(ID) %>% summarize(INT_T20 = max(INT)) %>% arrange(desc(INT_T20))
-```
-
-```{r}
-t %>% arrange(desc(PLATEAU))
-```
-
-```{r}
-t %>% arrange(desc(RATE))
-```
-
----
 
 See also:
 
