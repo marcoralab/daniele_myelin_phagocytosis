@@ -121,6 +121,8 @@ summary(lmer(INT ~ STATUS*factor(TIME) + (1 | ID), data=df))
 
 ## Model curve using aomisc package
 
+https://www.statforbiology.com/2020/stat_nls_usefulfunctions/
+
 ```{r}
 m = df %>%
   nest(data = -c(ID, STATUS)) %>%
@@ -159,11 +161,14 @@ df %>% filter(TIME == 20) %>% group_by(ID) %>% summarize(INT_T20 = max(INT)) %>%
 t %>% arrange(desc(PLATEAU))
 ```
 
+```{r}
+t %>% arrange(desc(RATE))
+```
+
 ---
 
 See also:
 
-- https://www.statforbiology.com/2020/stat_nls_usefulfunctions/
 - https://stats.oarc.ucla.edu/r/seminars/repeated-measures-analysis-with-r/
 - https://doi.org/10.1213%2FANE.0000000000003511
 - https://cran.r-project.org/web/packages/growthrates/vignettes/Introduction.html
