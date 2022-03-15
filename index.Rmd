@@ -189,12 +189,12 @@ saemix.data <- saemixData(name.data       = df,
 ```
 
 ```{r}
-model.fn <- function(psi,id,x) { 
-  t = x[,1] 
-  plateau = psi[id,1]
-  rate = psi[id,2]
-  fpred = plateau * (1 - exp(-rate * t))
-  return(fpred)
+model.fn <- function(psi, id, x) { 
+  t = x[, 1] 
+  plateau = psi[id, 1]
+  rate = psi[id, 2]
+  pred = plateau * (1 - exp(-rate * t))
+  return(pred)
 }
 
 saemix.model <- saemixModel(model = model.fn, 
