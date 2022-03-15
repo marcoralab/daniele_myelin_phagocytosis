@@ -224,7 +224,7 @@ saemix.model <- saemixModel(model = model.fn,
 saemix.fit1 = saemix(saemix.model, saemix.data)
 ```
 
-See also:
+## References
 
 - https://stats.oarc.ucla.edu/r/seminars/repeated-measures-analysis-with-r/
 - http://sia.webpopix.org/nlme.html
