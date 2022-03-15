@@ -143,17 +143,6 @@ t = m %>%
 t
 ```
 
-
-```{r}
-t.test(PLATEAU ~ STATUS, data = t)
-wilcox.test(PLATEAU ~ STATUS, data = t)
-```
-
-```{r}
-t.test(RATE ~ STATUS, data = t)
-wilcox.test(RATE ~ STATUS, data = t)
-```
-
 ```{r}
 df2 = df %>% left_join(m %>%
     mutate(TIME = list(0:20)) %>%
@@ -171,7 +160,7 @@ df2 = df %>% left_join(m %>%
         axis.ticks.x = element_blank(),
         axis.title.x = element_blank(),
         legend.position = "none") +
-ggplot(data = df2, mapping = aes(x = TIME, y = INT, group = ID, color = ID)) +
+ ggplot(data = df2, mapping = aes(x = TIME, y = INT, group = ID, color = ID)) +
   geom_point(size = 1) +
   geom_line(mapping = aes(y = predicted), alpha = 0.25) +
   ylim(0, 300000000) +
@@ -195,6 +184,16 @@ ggplot(data = df2, mapping = aes(x = TIME, y = INT, group = ID, color = ID)) +
         axis.ticks.y = element_blank(),
         axis.title.y = element_blank(),
         legend.position = "none"))
+```
+
+```{r}
+t.test(PLATEAU ~ STATUS, data = t)
+wilcox.test(PLATEAU ~ STATUS, data = t)
+```
+
+```{r}
+t.test(RATE ~ STATUS, data = t)
+wilcox.test(RATE ~ STATUS, data = t)
 ```
 
 ---
