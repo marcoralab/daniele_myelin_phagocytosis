@@ -142,10 +142,12 @@ t
 
 ```{r}
 t.test(PLATEAU ~ STATUS, data = t)
+wilcox.test(PLATEAU ~ STATUS, data = t)
 ```
 
 ```{r}
 t.test(RATE ~ STATUS, data = t)
+wilcox.test(RATE ~ STATUS, data = t)
 ```
 
 ```{r}
