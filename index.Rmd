@@ -33,18 +33,19 @@ df
 ```
 
 ```{r}
-ggplot(data = df, mapping = aes(x = TIME, y = INT, color = STATUS)) + geom_smooth(method = "loess", formula="y ~ x")
+ggplot(data = df, mapping = aes(x = TIME, y = INT, color = STATUS)) + geom_smooth(method = "loess", formula = y ~ x)
 ```
 ```{r}
 ggplot(data = df, mapping = aes(x = TIME, y = INT, group = ID, color = STATUS)) +
   geom_point() +
-  geom_line()
+  geom_line(alpha = 0.25)
 ```
 
 ## Linear regression forcing intercept to zero
 
 ```{r}
-ggplot(data = df, mapping = aes(x = TIME, y = INT, group = ID, color = STATUS)) + geom_smooth(method = "lm", formula="y ~ 0 + x", se = FALSE)
+ggplot(data = df, mapping = aes(x = TIME, y = INT, group = ID, color = STATUS)) +
+  geom_line(stat = "smooth", method = "lm", formula = y ~ 0 + x, se = FALSE, alpha = 0.5)
 ```
 
 ```{r}
@@ -73,7 +74,8 @@ plot(m2.res)
 ## Linear regression not forcing intercept to zero
 
 ```{r}
-ggplot(data = df, mapping = aes(x = TIME, y = INT, group = ID, color = STATUS)) + geom_smooth(method = "lm", formula="y ~ x", se = FALSE)
+ggplot(data = df, mapping = aes(x = TIME, y = INT, group = ID, color = STATUS)) +
+  geom_line(stat = "smooth", method = "lm", formula = y ~ x, se = FALSE, alpha = 0.5)
 ```
 
 
@@ -160,7 +162,19 @@ df2 = df %>% left_join(m %>%
 
 ggplot(data = df2, mapping = aes(x = TIME, y = INT, group = ID, color = ID)) +
   geom_point() +
-  geom_line(aes(y = predicted))
+  geom_line(mapping = aes(y = predicted), alpha = 0.25) #, linetype = "dotted")
+```
+
+```{r}
+ggplot(data = df2, mapping = aes(x = TIME, y = INT, color = STATUS)) +
+  geom_line(mapping = aes(y = predicted, group = ID), alpha = 0.25) +
+  geom_smooth(method = "loess", formula = y ~ x, linetype = "dashed", se = FALSE)
+```
+
+```{r}
+ggplot(data = df, mapping = aes(x = TIME, y = INT, color = STATUS)) +
+  geom_line(mapping = aes(group = ID), stat="smooth", method = "lm", formula= y ~ 0 + x, se = FALSE, alpha = 0.25) +
+  geom_smooth(method = "loess", formula="y ~ x", linetype = "dashed", se = FALSE)
 ```
 
 See also:
