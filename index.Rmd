@@ -198,7 +198,7 @@ model.fn <- function(psi,id,x) {
 }
 
 saemix.model <- saemixModel(model = model.fn, 
-                            psi0  = c(plateau = 10000000, rate = 0.5))
+                            psi0  = c(plateau = 10000000, rate = 0.1))
 ```
 
 ```{r}
