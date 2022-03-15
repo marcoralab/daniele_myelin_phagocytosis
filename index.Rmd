@@ -177,9 +177,39 @@ ggplot(data = df, mapping = aes(x = TIME, y = INT, color = STATUS)) +
   geom_smooth(method = "loess", formula="y ~ x", linetype = "dashed", se = FALSE)
 ```
 
+---
+
+```{r}
+library(saemix)
+
+saemix.data <- saemixData(name.data       = df,
+                          name.group      = "ID",
+                          name.predictors = "TIME",
+                          name.response   = "INT")
+```
+
+```{r}
+model.fn <- function(psi,id,x) { 
+  t = x[,1] 
+  plateau = psi[id,1]
+  rate = psi[id,2]
+  fpred = plateau * (1 - exp(-rate * t))
+  return(fpred)
+}
+
+saemix.model <- saemixModel(model = model.fn, 
+                            psi0  = c(plateau = 10000000, rate = 0.5))
+```
+
+```{r}
+saemix.fit1 = saemix(saemix.model, saemix.data)
+```
+
 See also:
 
 - https://stats.oarc.ucla.edu/r/seminars/repeated-measures-analysis-with-r/
+- http://sia.webpopix.org/nlme.html
+- https://saemixr.github.io/
 - https://doi.org/10.1213%2FANE.0000000000003511
 - https://cran.r-project.org/web/packages/growthrates/vignettes/Introduction.html
 - http://dpmartin42.github.io/posts/Piecewise-growth
