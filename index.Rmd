@@ -122,7 +122,7 @@ anova(lmer(INT ~ STATUS*factor(TIME) + (1 | ID), data=df))
 summary(lmer(INT ~ STATUS*factor(TIME) + (1 | ID), data=df))
 ```
 
-## Model curve using aomisc package
+## Fit curve using aomisc package + NHST
 
 https://www.statforbiology.com/2020/stat_nls_usefulfunctions/
 
