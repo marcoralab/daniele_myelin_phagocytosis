@@ -4,13 +4,13 @@ output: html_notebook
 ---
 
 ```{r include=FALSE}
+library(aomisc) # remotes::install_github("onofriAndreaPG/aomisc")
 library(tidyverse)
 library(magrittr)
 library(readxl)
+library(broom)
 library(lmerTest)
 library(DHARMa)
-library(growthrates)
-
 theme_set(theme_bw())
 ```
 
@@ -25,7 +25,7 @@ df
 
 df %<>%
   pivot_longer(-TIME, values_to = "INT", names_to = "ID") %>%
-  separate(ID, sep = 2, into = c("STATUS", NULL), remove = FALSE) %>%
+  separate(ID, sep = 2, into = "STATUS", remove = FALSE) %>%
   select(ID, STATUS, TIME, INT) %>%
   arrange(ID, TIME)
 
@@ -117,6 +117,34 @@ anova(lmer(INT ~ STATUS*factor(TIME) + (1 | ID), data=df))
 
 ```{r}
 summary(lmer(INT ~ STATUS*factor(TIME) + (1 | ID), data=df))
+```
+
+## Model curve using aomisc package
+
+```{r}
+m = df %>%
+  nest(data = -c(ID, STATUS)) %>%
+  mutate(
+    model = map(.x = data, ~ drm(.x$INT ~ .x$TIME, fct = DRC.negExp())),
+    tidied = map(model, tidy)
+  )
+
+m
+
+tt = m %>% 
+  unnest(tidied) %>%
+  pivot_wider(id_cols = c(ID, STATUS), names_from = term, values_from = estimate) %>%
+  rename(PLATEAU = a, RATE = c)
+
+tt
+
+t.test(PLATEAU ~ STATUS, data = tt)
+```
+
+```{r}
+ggplot(data = df, mapping = aes(x = TIME, y = INT, group = ID, color = ID)) +
+  geom_point() +
+  geom_line()
 ```
 
 ---
