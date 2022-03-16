@@ -126,6 +126,8 @@ summary(lmer(INT ~ STATUS*factor(TIME) + (1 | ID), data=df))
 
 https://www.statforbiology.com/2020/stat_nls_usefulfunctions/
 
+Fit data to negative exponential for estimating rate and plateau parameters for each individual, followed by t and wilcoxon test.
+
 ```{r}
 m = df %>%
   nest(data = -c(ID, STATUS)) %>%
